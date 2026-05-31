@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BOUND EVIL</title>
+    <!-- Tailwind CSS for the dark horror styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000000; font-family: monospace; user-select: none; }
+    </style>
+</head>
+<body class="text-zinc-300 min-h-screen flex flex-col justify-between p-4">
+
+    <!-- TOP AD ZONE -->
+    <div id="top-ad" class="hidden w-full border border-red-900 bg-red-950 p-2 text-center tracking-widest text-xs text-red-500 uppercase animate-pulse">
+        [ THE VEIL IS TEARING — ADSENSE_BANNER_TOP ]
+    </div>
+    <div id="top-stable" class="text-center text-[10px] text-zinc-700 tracking-widest uppercase">
+        👁️ Connection Stable
+    </div>
+
+    <!-- MAIN INTERFACE -->
+    <main class="max-w-md w-full mx-auto flex flex-col items-center space-y-6 my-auto text-center">
+        
+        <!-- Demon Box -->
+        <div id="demon-box" class="w-48 h-48 rounded-full border-2 border-emerald-900 flex flex-col items-center justify-center p-4 transition-all duration-500">
+            <div id="demon-icon" class="text-3xl text-emerald-500">👹</div>
+            <p class="text-[10px] uppercase text-zinc-500 mt-2 tracking-widest">Common Entity</p>
+            <h2 class="text-sm font-bold tracking-wider text-white">THE TRICKSTER</h2>
+            <p class="text-zinc-400 text-[11px] font-bold mt-2">Hunger: <span id="hunger-display" class="text-white">100%</span></p>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="w-full h-8">
+            <p id="status-text" class="text-emerald-500 text-xs uppercase">The entity is temporarily sated.</p>
+        </div>
+
+        <!-- Feeding Menu -->
+        <div class="w-full bg-zinc-950 border border-zinc-900 p-4 rounded-sm space-y-4" style="background-color: #09090b;">
+            <div class="flex justify-between border-b border-zinc-900 pb-2 items-center">
+                <span class="text-xs text-zinc-500 uppercase tracking-wider">Soul Cache:</span>
+                <span id="soul-display" class="text-amber-500 font-bold text-sm">✨ 10 Souls</span>
+            </div>
+
+            <button onclick="watchAd()" class="w-full py-2 bg-red-950 text-red-400 text-xs uppercase tracking-widest font-bold border border-red-900">
+                📺 Channel External Ad Energy (+3 Souls)
+            </button>
+
+            <div class="flex space-x-2 w-full">
+                <button onclick="feed(1, 20)" class="w-1/2 py-2 bg-zinc-900 text-zinc-300 text-xs uppercase border border-zinc-800">
+                    Feed 1 Soul (+20%)
+                </button>
+                <button onclick="feed(4, 100)" class="w-1/2 py-2 bg-zinc-900 text-zinc-300 text-xs uppercase border border-zinc-800">
+                    Feed 4 Souls (MAX)
+                </button>
+            </div>
+        </div>
+
+        <!-- PREMIUM UPSELL -->
+        <div id="premium-box" class="w-full bg-zinc-950 border border-zinc-900 p-4 rounded-sm">
+            <h3 class="text-xs uppercase text-zinc-400 tracking-wider font-bold mb-1">Buy Protection: The Iron Seal</h3>
+            <p class="text-[11px] text-zinc-600 mb-3">Stops all automatic display ad corruption and cuts hunger rates by 75%.</p>
+            <button onclick="buyPremium()" class="w-full py-2 bg-amber-600 text-black font-bold uppercase tracking-widest text-xs">
+                Inscribe Seal ($4.99)
+            </button>
+        </div>
+
+    </main>
+
+    <!-- BOTTOM AD ZONE -->
+    <div id="bottom-ad" class="hidden w-full border border-red-900 bg-red-950 p-2 text-center tracking-widest text-xs text-red-500 uppercase mt-4 animate-pulse">
+        [ SPONSORED THREAT — ADSENSE_BANNER_BOTTOM ]
+    </div>
+    <footer id="footer-text" class="text-center text-[9px] text-zinc-800 tracking-widest uppercase mt-4">
+        STRICT SYSTEM PROTOCOL IN EFFECT // 18+ ONLY
+    </footer>
+
+    <!-- GAME LOGIC ENGINE -->
+    <script>
+        let isPremium = false;
+        let soulOfferings = 10;
+        let hunger = 100;
+
+        // Hunger loop countdown
+        setInterval(() => {
+            let decay = isPremium ? 1 : 4; 
+            hunger = Math.max(0, hunger - decay);
+            updateUI();
+        }, 3000);
+
+        function updateUI() {
+            document.getElementById('hunger-display').innerText = hunger + "%";
+            document.getElementById('soul-display').innerText = "✨ " + soulOfferings + " Souls";
+
+            // Handle Ad system triggers based on hunger levels
+            if (!isPremium && hunger <= 25) {
+                document.getElementById('top-ad').classList.remove('hidden');
+                document.getElementById('bottom-ad').classList.remove('hidden');
+                document.getElementById('top-stable').classList.add('hidden');
+                document.getElementById('footer-text').classList.add('hidden');
+                document.getElementById('demon-box').style.borderColor = '#dc2626';
+                document.getElementById('demon-icon').innerText = hunger === 0 ? "💀" : "👹";
+                document.getElementById('status-text').innerText = hunger === 0 ? "RAGE MODE: Device compromised." : "The entity is clawing at the glass...";
+                document.getElementById('status-text').className = "text-red-500 text-xs uppercase animate-pulse";
+            } else {
+                document.getElementById('top-ad').classList.add('hidden');
+                document.getElementById('bottom-ad').classList.add('hidden');
+                document.getElementById('top-stable').classList.remove('hidden');
+                document.getElementById('footer-text').classList.remove('hidden');
+                document.getElementById('demon-box').style.borderColor = '#064e3b';
+                document.getElementById('demon-icon').innerText = "👹";
+                
+                if (hunger > 75) {
+                    document.getElementById('status-text').innerText = "The entity is temporarily sated.";
+                    document.getElementById('status-text').className = "text-emerald-500 text-xs uppercase";
+                } else {
+                    document.getElementById('status-text').innerText = "It watches you quietly.";
+                    document.getElementById('status-text').className = "text-amber-500 text-xs uppercase";
+                }
+            }
+        }
+
+        function watchAd() {
+            alert("🌀 Accessing the Void Network... Ad complete!");
+            soulOfferings += 3;
+            hunger = Math.min(100, hunger + 25);
+            updateUI();
+        }
+
+        function feed(cost, amount) {
+            if (soulOfferings >= cost) {
+                soulOfferings -= cost;
+                hunger = Math.min(100, hunger + amount);
+                updateUI();
+            } else {
+                alert("⚠️ NOT ENOUGH SOULS. WATCH AN AD.");
+            }
+        }
+
+        function buyPremium() {
+            isPremium = true;
+            document.getElementById('premium-box').innerHTML = `<p class="text-xs text-amber-500 tracking-widest uppercase">🛡️ The Iron Seal keeps the demon locked down.</p>`;
+            document.getElementById('top-stable').innerText = "🛡️ Device Quarantine Active";
+            hunger = 100;
+            updateUI();
+        }
+    </script>
+</body>
+</html>
